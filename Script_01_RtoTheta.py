@@ -37,18 +37,17 @@ bmin = 0.02 #Mpc physical
 bmax = 30.0 #Mpc physical
 lbmin = np.log(bmin)
 lbmax = np.log(bmax)
-R = np.exp(np.linspace(lbmin,lbmax,15))
+R = np.exp(np.linspace(lbmin,lbmax,16))
+print R
 
 for i in range(Nz):
     for j in range(Nl):
-        print i,j
         DA = calc_DA(zs[i,j],H0,Omega_m,Omega_l) #Mpc physical
         theta = R/DA/radians_per_am #arcminutes
         theta_bins = np.array([theta[:-1],theta[1:]]).T
         R_bins = np.array([R[:-1],R[1:]]).T
-
         #Write to a file
-        prefix = "theta_files/thetas_z%d_l%d"%(i,j)
+        prefix = "theta_files/annuli_z%d_l%d"%(i,j)
         outfile = open(prefix+".tab","w")
         outfile.write("%d\n"%len(theta_bins))
         for k in range(len(theta_bins)):
