@@ -17,7 +17,13 @@ Omega_l = 0.7
 Omega_k = 0.0
 
 #Redshift
-z=1.0
+path = "/home/tom/Desktop/DES_data/Y1_files/"
+zs = np.loadtxt(path+"Y1_meanz.txt")
+lams = np.loadtxt(path+"Y1_meanl.txt")
+number = np.loadtxt(path+"Y1_number.txt")
+Nz = len(zs)
+Nl = len(zs[0])
+print zs.shape
 
 # Angular diameter distance, a physical distance; Mpc
 def calc_DA(z,H0,Om,Ol):
@@ -32,16 +38,19 @@ bmax = 30.0 #Mpc physical
 lbmin = np.log(bmin)
 lbmax = np.log(bmax)
 R = np.exp(np.linspace(lbmin,lbmax,15))
-DA = calc_DA(z,H0,Omega_m,Omega_l) #Mpc physical
-theta = R/DA/radians_per_am #arcminutes
-theta_bins = np.array([theta[:-1],theta[1:]]).T
-R_bins = np.array([R[:-1],R[1:]]).T
-print theta_bins
 
-#Write to a file
-prefix = "thetas_z0_l0"
-outfile = open(prefix+".tab","w")
-outfile.write("%d\n"%len(theta_bins))
-for i in range(len(theta_bins)):
-    outfile.write("%.4f %.4f\n"%(theta_bins[i,0],theta_bins[i,1]))
-outfile.close()
+for i in range(Nz):
+    for j in range(Nl):
+        print i,j
+        DA = calc_DA(zs[i,j],H0,Omega_m,Omega_l) #Mpc physical
+        theta = R/DA/radians_per_am #arcminutes
+        theta_bins = np.array([theta[:-1],theta[1:]]).T
+        R_bins = np.array([R[:-1],R[1:]]).T
+
+        #Write to a file
+        prefix = "theta_files/thetas_z%d_l%d"%(i,j)
+        outfile = open(prefix+".tab","w")
+        outfile.write("%d\n"%len(theta_bins))
+        for k in range(len(theta_bins)):
+            outfile.write("%.4f %.4f\n"%(theta_bins[k,0],theta_bins[k,1]))
+        outfile.close()
