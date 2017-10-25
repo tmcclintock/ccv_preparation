@@ -33,7 +33,7 @@ def calc_DA(z,H0,Om,Ol):
     return (c/H0)*da/(1+z)
     
 #Define the radial bin edges
-bmin = 0.02 #Mpc physical
+bmin = 0.0323 #Mpc physical; 0.02 was SV bin
 bmax = 30.0 #Mpc physical
 lbmin = np.log(bmin)
 lbmax = np.log(bmax)
